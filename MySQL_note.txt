@@ -1,0 +1,4 @@
+修改mysql配置文件
+sudo vi /etc/mysql/my.cnf
+重启mysql
+service mysql restart
