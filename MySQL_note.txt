@@ -2,3 +2,135 @@
 sudo vi /etc/mysql/my.cnf
 重启mysql
 service mysql restart
+windows下mysql 的配置文件是my.ini
+windows下的默认端口号是3306
+windows下启动服务的命令是net start mysql  net start/stop可以启动/关闭任意的windows服务。也可以在右击计算机选择管理，然后再服务中选择服务内容重新启动。
+mysql命令中  -u是用户名  -p是密码 -P是端口号  -h是服务器名称  mysql -u root -p -P 3306 -h 127.0.0.1
+退出命令是exit;/quit;/\q;
+修改提示符 用prompt 提示符     prompt \u@\h \d>     \u是用户名 \h是主机名 \d是数据库名 \D是日期
+root@localhost>SELECT VERSION();
++-----------------+
+| VERSION()       |
++-----------------+
+| 5.6.24-0ubuntu2 |
++-----------------+
+1 row in set (0.00 sec)
+
+root@localhost>SELECT NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2015-06-19 19:36:11 |
++---------------------+
+1 row in set (0.02 sec)
+
+root@localhost>SELECT USER();
++----------------+
+| USER()         |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)
+MySQL规范：关键字与函数名称全部大写，数据库名称，表名称，字段名称全部小写，SQL语句必须以分号结尾
+CREATE DATABASE t1  创建数据库t1  CREATE DATABASE IF NOT EXISTS t1  如果要创建的数据库存在，则不返回错误
+SHOW DATABASES; 显示所有的数据库
+SHOW WARNINGS; 显示警告信息
+SHOW CREATE DATABASE t1;显示创建的数据库信息
+CREATE DATABASE IF NOT EXISTS t2 CHARACTER SET utf8;   创建数据库并指定编码方式
+ALTER DATABASE t2 CHARACTER SET gbk;修改数据库的编码方式
+DROP DATABASE t2; 删除数据库   
+DROP DATABASE IF EXISTS t2;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> SHOW WARNINGS;
++-------+------+--------------------------------------------------+
+| Level | Code | Message                                          |
++-------+------+--------------------------------------------------+
+| Note  | 1008 | Can't drop database 't2'; database doesn't exist |
++-------+------+--------------------------------------------------+
+1 row in set (0.00 sec)
+数据类型：
+整形：TINYINT 8位   SMALLINT16位  MEDIUMINT 24位 INT 32位 BIGINT 64位
+浮点型：FLOAT[(M,D)] M 是总位数 D是小数点之后的位数 单精度可以保留小数点后7位。 DOUBLE[(M,D)]
+日期时间型：YEAR TIME DATA DATETIME TIMESTAMP 用的非常少，一般用数据类型。
+字符型：CHAR(M) M个字节 0<=M <= 255 VARCHAR(M) L+1个字节，其中L <= M 0<=M <= 65535 
+TINYTEXT L+1个字节，其中L < 2的8次方 TEXT L+2个字节，其中L < 2的16次方
+MEDIUMTEXT L+3个字节，其中L < 2的24次方 LONGTEXT L+4个字节，其中L < 2的32次方
+ENUM('value1','value2')1个或2个字节   SET('value1','value2')1 2 3 4 或8个字节
+数据表的操作：
+USE test; 打开test
+SELECT DATABASE();//显示当前打开的数据库
+mysql> CREATE TABLE tb1(
+    -> username VARCHAR(20),
+    -> age TINYINT UNSIGNED,
+    -> salary FLOAT(8,2) UNSIGNED
+    -> );
+mysql> SHOW TABLES;    查看数据库中的数据表
++----------------+
+| Tables_in_test |
++----------------+
+| tb1            |
++----------------+
+1 row in set (0.00 sec)
+mysql> SHOW TABLES FROM mysql;  //查看mysql数据库中的数据表
+mysql> SHOW COLUMNS FROM tb1;   //查看数据表的结构
++----------+---------------------+------+-----+---------+-------+
+| Field    | Type                | Null | Key | Default | Extra |
++----------+---------------------+------+-----+---------+-------+
+| username | varchar(20)         | YES  |     | NULL    |       |
+| age      | tinyint(3) unsigned | YES  |     | NULL    |       |
+| salary   | float(8,2) unsigned | YES  |     | NULL    |       |
++----------+---------------------+------+-----+---------+-------+
+3 rows in set (0.13 sec)
+mysql> INSERT tb1 VALUES('tom',25,7899.45); //插入一条记录，省略列名称的话，要全部赋值。
+mysql> INSERT tb1 (username,salary) VALUES('kobe',2800.00);//部分字段赋值
+mysql> SELECT * FROM tb1; //查询所有的字段
+mysql> CREATE TABLE tb2(
+    -> username VARCHAR(20) NOT NULL,//不允许字段为空
+    -> age TINYINT UNSIGNED NULL
+    -> );
+主键：一张数据表中只能存在一个主键，主键保证记录的唯一性，主键自动为NOT NULL 
+mysql> CREATE TABLE tb3(
+    -> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,     //设置为主键，自动赋值 不用人为赋值
+    -> username VARCHAR(30) NOT NULL        
+    -> );                   
+mysql> CREATE TABLE tb4(
+    -> id SMALLINT UNSIGNED  PRIMARY KEY,     //设置为主键，没有AUTO_INCREMENT 可以人为赋值，但是不能重复
+    -> username VARCHAR(30) NOT NULL        
+    -> ); 
+AUTO_INCREMENT 必须与PRIMARY KEY 一起使用，但是 PRIMARY KEY 不一定要与AUTO_INCREMENT 一起使用。
+唯一约束：唯一约束可以保证记录的唯一性，唯一约束的字段可以为空值(NULL)，每张数据表可以存在多个唯一约束
+mysql> CREATE TABLE tb4(
+    -> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,   
+    -> username VARCHAR(30) NOT NULL UNIQUE KEY,     //唯一约束        
+    -> age TINYINT UNSIGNED
+    -> );
+默认约束：如果没有明确为字段赋值，则自动赋予默认值。
+mysql> CREATE TABLE tb5(
+    -> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,   
+    -> username VARCHAR(30) NOT NULL UNIQUE KEY,     //唯一约束        
+    -> sex ENUM('1','2','3') DEFAULT '3'    //默认值是3
+    -> );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
