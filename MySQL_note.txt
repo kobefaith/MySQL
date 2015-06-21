@@ -111,9 +111,65 @@ mysql> CREATE TABLE tb5(
     -> username VARCHAR(30) NOT NULL UNIQUE KEY,     //唯一约束        
     -> sex ENUM('1','2','3') DEFAULT '3'    //默认值是3
     -> );
-
-
-
+约束：约束保证数据的完整性和一致性。分为表级约束和列级约束。
+外键约束：实现一对一或一对多的关系。
+外键约束的要求：父表和子表必须使用相同的存储引擎，且必须是InnoDB,而且禁止使用临时表。
+外键列和参照列必须具有相似的数据类型。其中数字的长度和是否有符号位必须相同，而字符的长度则可以不同。
+外键列和参照列必须创建索引，如果参照列不存在索引的话，MySQL将自动创建索引。
+配置文件中的default-storage-engine = INNODB 表示引擎是InnoDB
+mysql> CREATE TABLE provinces(
+    -> id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    -> pname VARCHAR(20) NOT NULL
+    -> );
+mysql> CREATE TABLE users(
+    -> id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    -> username VARCHAR(20) NOT NULL,
+    -> pid SMALLINT UNSIGNED,
+    -> FOREIGN KEY (pid) REFERENCES provinces (id)    //设置外键，并与参照列绑定。
+    -> );
+mysql> SHOW INDEXES FROM provinces\G        //查看provinces表是否有索引
+*************************** 1. row ***************************
+        Table: provinces
+   Non_unique: 0
+     Key_name: PRIMARY
+ Seq_in_index: 1
+  Column_name: id
+    Collation: A
+  Cardinality: 0
+     Sub_part: NULL
+       Packed: NULL
+         Null: 
+   Index_type: BTREE
+      Comment: 
+Index_comment: 
+1 row in set (0.04 sec)
+外键约束的参照操作：
+CASCADE:从父表删除或更新且自动删除或更新子表中匹配的行。
+SET NULL:从父表删除或更新行，并设置子表中的外键列为NULL，如果使用该选项必须保证子表列没有指定NOT NULL
+RESTRICT:拒绝对父表的删除或更新操作。
+NO ACTION:标准SQL的关键字，在MySQL中与RESTRICT相同。
+mysql> CREATE TABLE users1(
+    -> id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    -> username VARCHAR(20) NOT NULL,
+    -> pid SMALLINT UNSIGNED,
+    -> FOREIGN KEY (pid) REFERENCES provinces (id) ON DELETE CASCADE 
+    -> );
+一般在项目中不使用物理外键，除了InnoDB 其他的引擎也不支持。
+NOT NULL  DEFAULT 只存在列级约束，不存在表级约束。
+ALTER TABLE users1 ADD age TINYINT UNSIGNED NOT NULL DEFAULT 10; //添加列
+ALTER TABLE users1 ADD password VARCHAR(20) NOT NULL AFTER username;//放到username的后面
+ALTER TABLE users1 ADD truename VARCHAR(20) NOT NULL FIRST;
+ALTER TABLE users1 DROP truename;//删除列
+ALTER TABLE users1 DROP truename,DROP password;
+ALTER TABLE users1 ADD password VARCHAR(20) NOT NULL AFTER username,DROP truename;
+ALTER TABLE users1 ADD PRIMARY KEY (id);
+ALTER TABLE users1 ADD UNIQUE (username);
+ALTER TABLE user1 ADD FOREIGN KEY (pid) REFERENCES provinces (id);
+ALTER TABLE users1 DROP PRIMARY KEY;
+ALTER TABLE users1 DROP INDEX username;//删除索引
+ALTER TABLE users1 MODIFY id SMALLINT UNSIGNED NOT NULL FIRST；//改变列的位置，类型等。
+ALTER TABLE users1 CHANGE pid p_id TINYINT UNSIGNED NOT NULL;//修改列的名称 和数据类型，
+ALTER TABLE users1 RENAME users2 ;//两种数据表的改名方式RENAME TABLE users3 TO users2;
 
 
 
