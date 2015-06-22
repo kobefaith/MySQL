@@ -170,6 +170,19 @@ ALTER TABLE users1 DROP INDEX username;//删除索引
 ALTER TABLE users1 MODIFY id SMALLINT UNSIGNED NOT NULL FIRST；//改变列的位置，类型等。
 ALTER TABLE users1 CHANGE pid p_id TINYINT UNSIGNED NOT NULL;//修改列的名称 和数据类型，
 ALTER TABLE users1 RENAME users2 ;//两种数据表的改名方式RENAME TABLE users3 TO users2;
+DROP TABLE users;   //删除表users
+INSERT users VALUES(NULL,'Tim','345',37,1);  //NULL或 DEFAULT 表示利用自动递增功能。
+INSERT users VALUES(NULL,'Tim','345',DEFAULT,1); //使用默认值
+INSERT users VALUES(NULL,'Tim','345',DEFAULT,1),(NULL,'KOBE',md5('123'),38,1); //同时插入两条记录
+INSERT users SET username='Ben',password='456';//这种方法一次只能插入一条记录，但是可以使用子查询。
+记录插入有3中方式  1 是标准的INSERT  2 INSERT SET  3 INSERT SELECT 
+更新记录：
+mysql> UPDATE users SET age = age + 5;
+mysql> UPDATE users SET age = age - id,sex = 0;  //同时更新两列或多列用逗号。
+mysql> UPDATE users SET age = age + 10 WHERE id % 2 = 0; //带条件的更新
+mysql> DELETE FROM users WHERE id = 6;
+mysql> SELECT id,username FROM users;   //只查询部分列
+
 
 
 
