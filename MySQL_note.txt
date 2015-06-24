@@ -182,6 +182,17 @@ mysql> UPDATE users SET age = age - id,sex = 0;  //同时更新两列或多列用逗号。
 mysql> UPDATE users SET age = age + 10 WHERE id % 2 = 0; //带条件的更新
 mysql> DELETE FROM users WHERE id = 6;
 mysql> SELECT id,username FROM users;   //只查询部分列
+mysql> SELECT sex FROM users GROUP BY sex;
+mysql> SELECT sex,age FROM users GROUP BY sex HAVING age > 35;    //HAVING 是对分组后的数据进行筛选，筛选的条件 age 必须在前面出现或是聚合表达式
+mysql> SELECT sex,SUM(age) FROM users GROUP BY sex HAVING SUM(age) > 35;
+mysql> SELECT * FROM users ORDER BY id DESC; //ORDER对查询结果排序，DESC是降序
+mysql> SELECT * FROM users ORDER BY age,id DESC;  //按两个字段排序，第一个相同的话，按第二个降序排列。
+mysql> SELECT * FROM users LIMIT 3,2;   //只输出查询结果的 第4个（从0开始算起，与id的数值没有关系）开始的两个记录。
+mysql> SELECT * FROM users ORDER BY id DESC LIMIT 2,2;
+mysql> INSERT test(username) SELECT username FROM users WHERE age > 35; //把users 数据表中age大于35 的记录的username 写入到test表的username 字段。
+
+
+
 
 
 
