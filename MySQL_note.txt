@@ -190,6 +190,18 @@ mysql> SELECT * FROM users ORDER BY age,id DESC;  //按两个字段排序，第一个相同的
 mysql> SELECT * FROM users LIMIT 3,2;   //只输出查询结果的 第4个（从0开始算起，与id的数值没有关系）开始的两个记录。
 mysql> SELECT * FROM users ORDER BY id DESC LIMIT 2,2;
 mysql> INSERT test(username) SELECT username FROM users WHERE age > 35; //把users 数据表中age大于35 的记录的username 写入到test表的username 字段。
+SELECT * FROM users \G;表示以网格的形态来显示。
+SET NAMES gbk;在客户端显示的时候用gbk编码。
+子查询指嵌套在查询内部，且必须始终出现在圆括号内。
+子查询可以包含多个关键字或条件，如DISTINCT GROUP BY ORDER BY LIMIT 函数等。
+子查询的外层查询可以是 SELECT INSERT UPDATE SET或 DO
+SELECT ROUND(AVG(goods_price),2) FROM tdb_goods; //计算价格的平均值，并四舍五入保留小数点后两位。
+SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= (SELECT ROUND(AVG(goods_price),2) FROM tdb_goods);//嵌入子查询。
+用比较运算符引发子查询的时候，可以使用ANY SOME  ALL .ANY SOME 表示满足其中一个就可以，ALL表示全部要满足。
+SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= ANY (SELECT goods_price FROM tdb_goods WHERE goods_cate = '超级本');
+使用IN [NOT] IN 引发的子查询 ANY与 IN 等价  !=ALL 与 NOT IN 等价
+EXISTS  NOT EXISTS 引发的子查询 ，如果子查询返回任何行，EXISTS将返回TRUE 否则返回 FALSE。
+
 
 
 
