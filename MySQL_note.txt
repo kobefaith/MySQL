@@ -203,6 +203,11 @@ SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= ANY (
 EXISTS  NOT EXISTS 引发的子查询 ，如果子查询返回任何行，EXISTS将返回TRUE 否则返回 FALSE。
 INSERT tdb_goods_cates(cate_name) SELECT goods_cate FROM tdb_goods GROUP BY goods_cate;
 将tdb_goods 表中的 商品分类 写入到 tdb_goods_cates表的cate_name 字段。
+表的连接 MySQL JOIN CROSS JOIN INNER JOIN 是等价的  LEFT[OUTER] JOIN 左外连接 RIGHT[OUTER] JOIN 右外连接
+UPDATE tdb_goods INNER JOIN tdb_goods_cates ON goods_cate = cate_name SET goods_cate = cate_id;
+用INNER JOIN将两张表连接，连接的条件是 tdb_goods 的cate_name 等于tdb_goods_cates 的goods_cate ，
+然后更新tdb_goods_cates的goods_cate 字段，用cate_id 更新。
+
 
 
 
