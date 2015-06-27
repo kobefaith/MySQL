@@ -207,8 +207,22 @@ INSERT tdb_goods_cates(cate_name) SELECT goods_cate FROM tdb_goods GROUP BY good
 UPDATE tdb_goods INNER JOIN tdb_goods_cates ON goods_cate = cate_name SET goods_cate = cate_id;
 用INNER JOIN将两张表连接，连接的条件是 tdb_goods 的cate_name 等于tdb_goods_cates 的goods_cate ，
 然后更新tdb_goods_cates的goods_cate 字段，用cate_id 更新。
-
-
+CREATE TABLE tdb_goods_brands
+(
+brand_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+brand_name VARCHAR(40) NOT NULL
+)
+SELECT brand_name FROM tdb_goods GROUP BY brand_name;
+//可以一步创建表格tdb_goods_brands并将tdb_goods 的brand_name字段的分类写入。
+UPDATE tdb_goods INNER JOIN tdb_goods_brands ON brand_name = brand_name SET brand_name = brand_id;
+//这样写会导致错误 系统无法区分两个brand_name。解决方法可以在brand_name前加上表的名字，或用AS 给表起别名
+UPDATE tdb_goods AS a INNER JOIN tdb_goods_brands AS b ON a.brand_name = b.brand_name SET a.brand_name = b.brand_id;
+这样操作后brand_name 字段数值为数字，但是类型还是原来的VARCHAR ,为了减少占用的空间，需要修改表的结构。
+ALTER TABLE tdb_goods
+CHANGE goods_cate cate_id SMALLINT UNSIGNED NOT NULL ,
+CHANGE brand_name brand_id SMALLINT UNSIGNED NOT NULL;
+修改表的结构。
+内连接仅显示符合连接条件的记录。LEFT JOIN是显示左表的全部和右表中符合条件的 。
 
 
 
