@@ -175,7 +175,7 @@ INSERT users VALUES(NULL,'Tim','345',37,1);  //NULL或 DEFAULT 表示利用自动递增功
 INSERT users VALUES(NULL,'Tim','345',DEFAULT,1); //使用默认值
 INSERT users VALUES(NULL,'Tim','345',DEFAULT,1),(NULL,'KOBE',md5('123'),38,1); //同时插入两条记录
 INSERT users SET username='Ben',password='456';//这种方法一次只能插入一条记录，但是可以使用子查询。
-记录插入有3中方式  1 是标准的INSERT  2 INSERT SET  3 INSERT SELECT 
+记录插入有3中方式  1 是标准的INSERT VALUES 2 INSERT SET  3 INSERT SELECT 
 更新记录：
 mysql> UPDATE users SET age = age + 5;
 mysql> UPDATE users SET age = age - id,sex = 0;  //同时更新两列或多列用逗号。
@@ -201,6 +201,8 @@ SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= (SELE
 SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= ANY (SELECT goods_price FROM tdb_goods WHERE goods_cate = '超级本');
 使用IN [NOT] IN 引发的子查询 ANY与 IN 等价  !=ALL 与 NOT IN 等价
 EXISTS  NOT EXISTS 引发的子查询 ，如果子查询返回任何行，EXISTS将返回TRUE 否则返回 FALSE。
+INSERT tdb_goods_cates(cate_name) SELECT goods_cate FROM tdb_goods GROUP BY goods_cate;
+将tdb_goods 表中的 商品分类 写入到 tdb_goods_cates表的cate_name 字段。
 
 
 
