@@ -206,7 +206,7 @@ INSERT tdb_goods_cates(cate_name) SELECT goods_cate FROM tdb_goods GROUP BY good
 表的连接 MySQL JOIN CROSS JOIN INNER JOIN 是等价的  LEFT[OUTER] JOIN 左外连接 RIGHT[OUTER] JOIN 右外连接
 UPDATE tdb_goods INNER JOIN tdb_goods_cates ON goods_cate = cate_name SET goods_cate = cate_id;
 用INNER JOIN将两张表连接，连接的条件是 tdb_goods 的cate_name 等于tdb_goods_cates 的goods_cate ，
-然后更新tdb_goods_cates的goods_cate 字段，用cate_id 更新。
+然后更新tdb_goods_cates的goods_cate 字段，用cate_id 更新。这样做是为了减少tdb_goods表的存储空间。
 CREATE TABLE tdb_goods_brands
 (
 brand_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -223,9 +223,36 @@ CHANGE goods_cate cate_id SMALLINT UNSIGNED NOT NULL ,
 CHANGE brand_name brand_id SMALLINT UNSIGNED NOT NULL;
 修改表的结构。
 内连接仅显示符合连接条件的记录。LEFT JOIN是显示左表的全部和右表中符合条件的 。
+-- 查询所有商品的详细信息(通过内连接实现)//连接两个表
 
+   SELECT goods_id,goods_name,cate_name,brand_name,goods_price FROM tdb_goods AS g
 
+   INNER JOIN tdb_goods_cates AS c ON g.cate_id = c.cate_id
 
+   INNER JOIN tdb_goods_brands AS b ON g.brand_id = b.brand_id\G;
+表的连接可以看做是外键的逆向操作。
+很多时候商品的分类是又子类的，要创建这样的表格，可以用自身连接
+-- 无限分类的数据表设计
+
+   CREATE TABLE tdb_goods_types(
+     type_id   SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+     type_name VARCHAR(20) NOT NULL,
+     parent_id SMALLINT UNSIGNED NOT NULL DEFAULT 0
+  ); //记录父类的id
+ 插入方法如下：
+ INSERT tdb_goods_types(type_name,parent_id) VALUES('家用电器',DEFAULT);
+  INSERT tdb_goods_types(type_name,parent_id) VALUES('电脑、办公',DEFAULT);
+  INSERT tdb_goods_types(type_name,parent_id) VALUES('大家电',1);
+  -- 查找所有分类及其父类  自身连接
+SELECT s.type_id,s.type_name,p.type_name FROM tdb_goods_types AS s LEFT JOIN tdb_goods_types AS  p ON s.parent_id = p.type_id;
+-- 查找所有分类及其子类的数目
+SELECT p.type_id,p.type_name,count(s.type_name) AS children_count FROM tdb_goods_types AS p LEFT JOIN tdb_goods_types AS s ON s.parent_id = p.type_id GROUP BY p.type_name ORDER BY p.type_id;
+-- 查找重复记录
+  SELECT goods_id,goods_name FROM tdb_goods GROUP BY goods_name HAVING count(goods_name) >= 2;
+-- 删除重复记录
+DELETE t1 FROM tdb_goods AS t1 LEFT JOIN (SELECT goods_id,goods_name FROM tdb_goods GROUP BY goods_name HAVING count(goods_name) >= 2 ) AS t2  ON t1.goods_name = t2.goods_name  WHERE t1.goods_id > t2.goods_id;
+  
+  
 
 
 
