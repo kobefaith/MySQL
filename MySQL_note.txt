@@ -251,8 +251,18 @@ SELECT p.type_id,p.type_name,count(s.type_name) AS children_count FROM tdb_goods
   SELECT goods_id,goods_name FROM tdb_goods GROUP BY goods_name HAVING count(goods_name) >= 2;
 -- 删除重复记录
 DELETE t1 FROM tdb_goods AS t1 LEFT JOIN (SELECT goods_id,goods_name FROM tdb_goods GROUP BY goods_name HAVING count(goods_name) >= 2 ) AS t2  ON t1.goods_name = t2.goods_name  WHERE t1.goods_id > t2.goods_id;
-  
-  
+字符函数：
+SELECT CONCAT('imooc','MySQL'); 连接字符串
+ DESC test ;查看表的结构
+SELECT CONCAT(first_name,last_name) AS fullname FROM test;将数据表中的两个字段连接起来
+SELECT CONTCAT_WS('-','imooc','MySQL');将imooc 和 MySQL连接在一起
+SELECT FORMAT(12389.56,2); 12,389.56 格式化数字
+SELECT LOWER('MySQL');mysql
+SELECT UPPER('mysql');MySQL
+SELECT LEFT('MySQL',2);My
+SELECT LOWER(LEFT('MySQL',2));my
+SELECT LOWER(RIGHT('MySQL',3)); sql
+SELECT LENGTH('MySQL'); 5  如果中间有空格，空格也算在长度中。
 
 
 
