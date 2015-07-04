@@ -263,6 +263,28 @@ SELECT LEFT('MySQL',2);My
 SELECT LOWER(LEFT('MySQL',2));my
 SELECT LOWER(RIGHT('MySQL',3)); sql
 SELECT LENGTH('MySQL'); 5  如果中间有空格，空格也算在长度中。
+SELECT LENGTH(LTRIM('  MySQL    '));   9
+SELECT LENGTH(RTRIM('  MySQL    '));   7
+SELECT LENGTH(TRIM('  MySQL    '));   5
+SELECT TRIM(LEADING '?' FROM '??MySQL???');  MySQL???   删除前导?
+SELECT TRIM(TRAILING '?' FROM '??MySQL???');删除后缀字符?
+SELECT TRIM(BOTH '?' FROM '??MySQL???');MySQL
+SELECT REPLACE('??MySQL???','?','');将??MySQL??? 中的？删除。
+SELECT REPLACE('??MySQL???','?','!!*');替换的字符串长度可以不对等。
+SELECT SUBSTRING('MySQL',1,2);//  My 从MySQL中的第一位开始截取，截取两个字符
+SELECT SUBSTRING('MySQL',3);//SQL
+SELECT SUBSTRING('MySQL',-1); L
+SELECT 'MySQL' LIKE 'M%'; 1 1 表示true
+SELECT * FROM test WHERE first_name LIKE '%1%%' ESCAPE '1' ;表示1后面的%是普通字符不是通配符。
+%代表任意字符，_代表任意一个字符。
+SELECT CEIL(3.01); 4 进一取整
+
+
+
+
+
+
+
 
 
 
