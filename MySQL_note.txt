@@ -278,7 +278,42 @@ SELECT 'MySQL' LIKE 'M%'; 1 1 表示true
 SELECT * FROM test WHERE first_name LIKE '%1%%' ESCAPE '1' ;表示1后面的%是普通字符不是通配符。
 %代表任意字符，_代表任意一个字符。
 SELECT CEIL(3.01); 4 进一取整
-
+SELECT FLOOR(3.99); 3 舍一取整
+SELECT 3 DIV 4 ; 0
+SELECT 5 % 3 ; 2  SELECT 5 MOD 3 ; 2
+SELECT POWER(3,3) 27
+SELECT ROUND(3.652,1);3.7  //四舍五入
+SELECT ROUND(3.652,2);3.65
+SELECT ROUND(3.652,0); 4
+SELECT TRUNCATE(125.89,0) ;125  //与四舍五入不同，只是截断
+比较运算符与函数
+SELECT 15 BETWEEN 1 AND 22 ;  1 
+SELECT 35 NOT BETWEEN 1 AND 22; 0 
+SELECT 10 IN(5,10,15,29);1
+SELECT '' IS NULL ; 0
+SELECT * FROM test WHERE first_name IS NULL;
+SELECT NOW(); 打印出当前的日期和时间。
+SELECT CURDATE();打印当前日期。
+SELECT CURTIME();打印当前时间。
+SELECT DATE_ADD('2014-3-12',INTERVAL 365 DAY); 2015-03-12
+SELECT DATE_ADD('2014-3-12',INTERVAL -365 DAY); 2013-03-12  YEAR WEEK 等也可以用
+SELECT DATEDIFF('2013-3-12','2014-3-12'); -365
+SELECT DATE_FORMAT('2014-3-12','%m/%d/%Y');03/02/2014
+信息函数
+SELECT CONNECTION_ID();返回连接的ID
+SELECT DATABASE();返回打开的数据库
+SELECT USER();打印用户
+SELECT VERSION();打印版本信息
+聚合函数
+SELECT ROUND(AVG(goods_prices),2) AS avg_price FROM tdb_goods;
+SELECT COUNT(goods_id) AS counts FROM tdb_goods;
+SELECT MAX(goods_price) AS prices FROM tdb_goods;
+SELECT MIN(goods_price) AS prices FROM tdb_goods;
+SELECT SUM(goods_price) AS prices FROM tdb_goods;
+加密函数：
+SELECT MD5('admin');//给web页面做准备的
+SELECT PASSWORD('abcd');//给mysql修改密码用。
+自定义函数：
 
 
 
