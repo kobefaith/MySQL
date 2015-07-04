@@ -314,8 +314,22 @@ SELECT SUM(goods_price) AS prices FROM tdb_goods;
 SELECT MD5('admin');//给web页面做准备的
 SELECT PASSWORD('abcd');//给mysql修改密码用。
 自定义函数：
-
-
+CREATE FUNCTION f1() RETURNS VARCHAR(30)
+RETURN DATE_FORMAT(NOW(),'%Y年%m月%d日 %H点:%i分:%s秒');
+SELECT f1();
+DROP FUNCTION f2; 删除函数
+CREATE FUNCTION f2(num1 SMALLINT UNSIGNED,num2 SMALLINT UNSIGNED)
+RETURNS FLOAT(10,2) UNSIGNED
+RETURN (num1+num2)/2;
+自定义函数实现求两个数的平均值
+DELIMITER //  表示命令的结束符换成了//
+CREATE FUNCTION adduser(username VARCHAR(20))
+RETURNS INT UNSIGNED 
+BEGIN
+INSERT test(username) VALUES(username);
+RETURN LAST_INSERT_ID();
+END
+//
 
 
 
