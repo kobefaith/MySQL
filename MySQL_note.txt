@@ -334,6 +334,22 @@ END
 MySQl 的执行过程：SQL命令------MySQL引擎 _分析___  语法正确-----编译为可识别的命令-----执行----返回执行结果。
 存储过程是SQl语句和控制语句的预编译集合，以一个名称存储并作为一个单元处理。
 存储过程的优点：增强SQL语句的功能和灵活性。实现了较快的执行速度。减少网络流量（如果需要删除某条记录，不需要从客户端发送sql命令，只需要发送存储过程的名字和要删除的id就行）
+存储过程的定义与自定义函数相似。
+参数有三种类型：IN 表示该参数的值必须在调用存储过程时指定。OUT表示该参数的值可以被存储过程改变，并且可以返回。INOUT表示该参数在调用时指定，并且可以改变和返回。
+过程体如果为复合结构则使用BEGIN 。。。END语句。
+CREATE PROCEDURE sp1() SELECT VERSION();
+CALL sp1;//没有参数 调用的话可以带小括号也可以不带小括号。
+CALL sp1();
+修改过程体只能先将存储过程删除，然后重建存储过程。
+DROP PROCEDURE  sp_name;
+DELIMITER //
+CREATE PROCEDURE removeUserById(IN p_id INT UNSIGNED)
+BEGIN
+DELETE FROM users WHERE id = p_id;
+END
+//
+DELIMITER ;
+CALL removeUserById(6);
 
 
 
