@@ -1,13 +1,13 @@
-�޸�mysql�����ļ�
+修改mysql配置文件
 sudo vi /etc/mysql/my.cnf
-����mysql
+重启mysql
 service mysql restart
-windows��mysql �������ļ���my.ini
-windows�µ�Ĭ�϶˿ں���3306
-windows�����������������net start mysql  net start/stop��������/�ر������windows����Ҳ�������һ������ѡ�������Ȼ���ٷ�����ѡ�������������������
-mysql������  -u���û���  -p������ -P�Ƕ˿ں�  -h�Ƿ���������  mysql -u root -p -P 3306 -h 127.0.0.1
-�˳�������exit;/quit;/\q;
-�޸���ʾ�� ��prompt ��ʾ��     prompt \u@\h \d>     \u���û��� \h�������� \d�����ݿ��� \D������
+windows下mysql 的配置文件是my.ini
+windows下的默认端口号是3306
+windows下启动服务的命令是net start mysql  net start/stop可以启动/关闭任意的windows服务。也可以在右击计算机选择管理，然后再服务中选择服务内容重新启动。
+mysql命令中  -u是用户名  -p是密码 -P是端口号  -h是服务器名称  mysql -u root -p -P 3306 -h 127.0.0.1
+退出命令是exit;/quit;/\q;
+修改提示符 用prompt 提示符     prompt \u@\h \d>     \u是用户名 \h是主机名 \d是数据库名 \D是日期
 root@localhost>SELECT VERSION();
 +-----------------+
 | VERSION()       |
@@ -31,14 +31,14 @@ root@localhost>SELECT USER();
 | root@localhost |
 +----------------+
 1 row in set (0.00 sec)
-MySQL�淶���ؼ����뺯������ȫ����д�����ݿ����ƣ������ƣ��ֶ�����ȫ��Сд��SQL�������ԷֺŽ�β
-CREATE DATABASE t1  �������ݿ�t1  CREATE DATABASE IF NOT EXISTS t1  ���Ҫ���������ݿ���ڣ��򲻷��ش���
-SHOW DATABASES; ��ʾ���е����ݿ�
-SHOW WARNINGS; ��ʾ������Ϣ
-SHOW CREATE DATABASE t1;��ʾ���������ݿ���Ϣ
-CREATE DATABASE IF NOT EXISTS t2 CHARACTER SET utf8;   �������ݿⲢָ�����뷽ʽ
-ALTER DATABASE t2 CHARACTER SET gbk;�޸����ݿ�ı��뷽ʽ
-DROP DATABASE t2; ɾ�����ݿ�   
+MySQL规范：关键字与函数名称全部大写，数据库名称，表名称，字段名称全部小写，SQL语句必须以分号结尾
+CREATE DATABASE t1  创建数据库t1  CREATE DATABASE IF NOT EXISTS t1  如果要创建的数据库存在，则不返回错误
+SHOW DATABASES; 显示所有的数据库
+SHOW WARNINGS; 显示警告信息
+SHOW CREATE DATABASE t1;显示创建的数据库信息
+CREATE DATABASE IF NOT EXISTS t2 CHARACTER SET utf8;   创建数据库并指定编码方式
+ALTER DATABASE t2 CHARACTER SET gbk;修改数据库的编码方式
+DROP DATABASE t2; 删除数据库   
 DROP DATABASE IF EXISTS t2;
 Query OK, 0 rows affected, 1 warning (0.01 sec)
 
@@ -49,31 +49,31 @@ mysql> SHOW WARNINGS;
 | Note  | 1008 | Can't drop database 't2'; database doesn't exist |
 +-------+------+--------------------------------------------------+
 1 row in set (0.00 sec)
-�������ͣ�
-���Σ�TINYINT 8λ   SMALLINT16λ  MEDIUMINT 24λ INT 32λ BIGINT 64λ
-�����ͣ�FLOAT[(M,D)] M ����λ�� D��С����֮���λ�� �����ȿ��Ա���С�����7λ�� DOUBLE[(M,D)]
-����ʱ���ͣ�YEAR TIME DATA DATETIME TIMESTAMP �õķǳ��٣�һ�����������͡�
-�ַ��ͣ�CHAR(M) M���ֽ� 0<=M <= 255 VARCHAR(M) L+1���ֽڣ�����L <= M 0<=M <= 65535 
-TINYTEXT L+1���ֽڣ�����L < 2��8�η� TEXT L+2���ֽڣ�����L < 2��16�η�
-MEDIUMTEXT L+3���ֽڣ�����L < 2��24�η� LONGTEXT L+4���ֽڣ�����L < 2��32�η�
-ENUM('value1','value2')1����2���ֽ�   SET('value1','value2')1 2 3 4 ��8���ֽ�
-���ݱ��Ĳ�����
-USE test; ��test
-SELECT DATABASE();//��ʾ��ǰ�򿪵����ݿ�
+数据类型：
+整形：TINYINT 8位   SMALLINT16位  MEDIUMINT 24位 INT 32位 BIGINT 64位
+浮点型：FLOAT[(M,D)] M 是总位数 D是小数点之后的位数 单精度可以保留小数点后7位。 DOUBLE[(M,D)]
+日期时间型：YEAR TIME DATA DATETIME TIMESTAMP 用的非常少，一般用数据类型。
+字符型：CHAR(M) M个字节 0<=M <= 255 VARCHAR(M) L+1个字节，其中L <= M 0<=M <= 65535 
+TINYTEXT L+1个字节，其中L < 2的8次方 TEXT L+2个字节，其中L < 2的16次方
+MEDIUMTEXT L+3个字节，其中L < 2的24次方 LONGTEXT L+4个字节，其中L < 2的32次方
+ENUM('value1','value2')1个或2个字节   SET('value1','value2')1 2 3 4 或8个字节
+数据表的操作：
+USE test; 打开test
+SELECT DATABASE();//显示当前打开的数据库
 mysql> CREATE TABLE tb1(
     -> username VARCHAR(20),
     -> age TINYINT UNSIGNED,
     -> salary FLOAT(8,2) UNSIGNED
     -> );
-mysql> SHOW TABLES;    �鿴���ݿ��е����ݱ�
+mysql> SHOW TABLES;    查看数据库中的数据表
 +----------------+
 | Tables_in_test |
 +----------------+
 | tb1            |
 +----------------+
 1 row in set (0.00 sec)
-mysql> SHOW TABLES FROM mysql;  //�鿴mysql���ݿ��е����ݱ�
-mysql> SHOW COLUMNS FROM tb1;   //�鿴���ݱ��Ľṹ
+mysql> SHOW TABLES FROM mysql;  //查看mysql数据库中的数据表
+mysql> SHOW COLUMNS FROM tb1;   //查看数据表的结构
 +----------+---------------------+------+-----+---------+-------+
 | Field    | Type                | Null | Key | Default | Extra |
 +----------+---------------------+------+-----+---------+-------+
@@ -82,41 +82,41 @@ mysql> SHOW COLUMNS FROM tb1;   //�鿴���ݱ��Ľṹ
 | salary   | float(8,2) unsigned | YES  |     | NULL    |       |
 +----------+---------------------+------+-----+---------+-------+
 3 rows in set (0.13 sec)
-mysql> INSERT tb1 VALUES('tom',25,7899.45); //����һ����¼��ʡ�������ƵĻ���Ҫȫ����ֵ��
-mysql> INSERT tb1 (username,salary) VALUES('kobe',2800.00);//�����ֶθ�ֵ
-mysql> SELECT * FROM tb1; //��ѯ���е��ֶ�
+mysql> INSERT tb1 VALUES('tom',25,7899.45); //插入一条记录，省略列名称的话，要全部赋值。
+mysql> INSERT tb1 (username,salary) VALUES('kobe',2800.00);//部分字段赋值
+mysql> SELECT * FROM tb1; //查询所有的字段
 mysql> CREATE TABLE tb2(
-    -> username VARCHAR(20) NOT NULL,//�������ֶ�Ϊ��
+    -> username VARCHAR(20) NOT NULL,//不允许字段为空
     -> age TINYINT UNSIGNED NULL
     -> );
-������һ�����ݱ���ֻ�ܴ���һ��������������֤��¼��Ψһ�ԣ������Զ�ΪNOT NULL 
+主键：一张数据表中只能存在一个主键，主键保证记录的唯一性，主键自动为NOT NULL 
 mysql> CREATE TABLE tb3(
-    -> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,     //����Ϊ�������Զ���ֵ ������Ϊ��ֵ
+    -> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,     //设置为主键，自动赋值 不用人为赋值
     -> username VARCHAR(30) NOT NULL        
     -> );                   
 mysql> CREATE TABLE tb4(
-    -> id SMALLINT UNSIGNED  PRIMARY KEY,     //����Ϊ������û��AUTO_INCREMENT ������Ϊ��ֵ�����ǲ����ظ�
+    -> id SMALLINT UNSIGNED  PRIMARY KEY,     //设置为主键，没有AUTO_INCREMENT 可以人为赋值，但是不能重复
     -> username VARCHAR(30) NOT NULL        
     -> ); 
-AUTO_INCREMENT ������PRIMARY KEY һ��ʹ�ã����� PRIMARY KEY ��һ��Ҫ��AUTO_INCREMENT һ��ʹ�á�
-ΨһԼ����ΨһԼ�����Ա�֤��¼��Ψһ�ԣ�ΨһԼ�����ֶο���Ϊ��ֵ(NULL)��ÿ�����ݱ����Դ��ڶ��ΨһԼ��
+AUTO_INCREMENT 必须与PRIMARY KEY 一起使用，但是 PRIMARY KEY 不一定要与AUTO_INCREMENT 一起使用。
+唯一约束：唯一约束可以保证记录的唯一性，唯一约束的字段可以为空值(NULL)，每张数据表可以存在多个唯一约束
 mysql> CREATE TABLE tb4(
     -> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,   
-    -> username VARCHAR(30) NOT NULL UNIQUE KEY,     //ΨһԼ��        
+    -> username VARCHAR(30) NOT NULL UNIQUE KEY,     //唯一约束        
     -> age TINYINT UNSIGNED
     -> );
-Ĭ��Լ�������û����ȷΪ�ֶθ�ֵ�����Զ�����Ĭ��ֵ��
+默认约束：如果没有明确为字段赋值，则自动赋予默认值。
 mysql> CREATE TABLE tb5(
     -> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,   
-    -> username VARCHAR(30) NOT NULL UNIQUE KEY,     //ΨһԼ��        
-    -> sex ENUM('1','2','3') DEFAULT '3'    //Ĭ��ֵ��3
+    -> username VARCHAR(30) NOT NULL UNIQUE KEY,     //唯一约束        
+    -> sex ENUM('1','2','3') DEFAULT '3'    //默认值是3
     -> );
-Լ����Լ����֤���ݵ������Ժ�һ���ԡ���Ϊ����Լ�����м�Լ����
-���Լ����ʵ��һ��һ��һ�Զ�Ĺ�ϵ��
-���Լ����Ҫ�󣺸������ӱ�����ʹ����ͬ�Ĵ洢���棬�ұ�����InnoDB,���ҽ�ֹʹ����ʱ����
-����кͲ����б���������Ƶ��������͡��������ֵĳ��Ⱥ��Ƿ��з���λ������ͬ�����ַ��ĳ�������Բ�ͬ��
-����кͲ����б��봴����������������в����������Ļ���MySQL���Զ�����������
-�����ļ��е�default-storage-engine = INNODB ��ʾ������InnoDB
+约束：约束保证数据的完整性和一致性。分为表级约束和列级约束。
+外键约束：实现一对一或一对多的关系。
+外键约束的要求：父表和子表必须使用相同的存储引擎，且必须是InnoDB,而且禁止使用临时表。
+外键列和参照列必须具有相似的数据类型。其中数字的长度和是否有符号位必须相同，而字符的长度则可以不同。
+外键列和参照列必须创建索引，如果参照列不存在索引的话，MySQL将自动创建索引。
+配置文件中的default-storage-engine = INNODB 表示引擎是InnoDB
 mysql> CREATE TABLE provinces(
     -> id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     -> pname VARCHAR(20) NOT NULL
@@ -125,9 +125,9 @@ mysql> CREATE TABLE users(
     -> id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     -> username VARCHAR(20) NOT NULL,
     -> pid SMALLINT UNSIGNED,
-    -> FOREIGN KEY (pid) REFERENCES provinces (id)    //�����������������а󶨡�
+    -> FOREIGN KEY (pid) REFERENCES provinces (id)    //设置外键，并与参照列绑定。
     -> );
-mysql> SHOW INDEXES FROM provinces\G        //�鿴provinces���Ƿ�������
+mysql> SHOW INDEXES FROM provinces\G        //查看provinces表是否有索引
 *************************** 1. row ***************************
         Table: provinces
    Non_unique: 0
@@ -143,186 +143,186 @@ mysql> SHOW INDEXES FROM provinces\G        //�鿴provinces���Ƿ�������
       Comment: 
 Index_comment: 
 1 row in set (0.04 sec)
-���Լ���Ĳ��ղ�����
-CASCADE:�Ӹ���ɾ����������Զ�ɾ��������ӱ���ƥ����С�
-SET NULL:�Ӹ���ɾ��������У��������ӱ��е������ΪNULL�����ʹ�ø�ѡ����뱣֤�ӱ���û��ָ��NOT NULL
-RESTRICT:�ܾ��Ը�����ɾ������²�����
-NO ACTION:��׼SQL�Ĺؼ��֣���MySQL����RESTRICT��ͬ��
+外键约束的参照操作：
+CASCADE:从父表删除或更新且自动删除或更新子表中匹配的行。
+SET NULL:从父表删除或更新行，并设置子表中的外键列为NULL，如果使用该选项必须保证子表列没有指定NOT NULL
+RESTRICT:拒绝对父表的删除或更新操作。
+NO ACTION:标准SQL的关键字，在MySQL中与RESTRICT相同。
 mysql> CREATE TABLE users1(
     -> id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     -> username VARCHAR(20) NOT NULL,
     -> pid SMALLINT UNSIGNED,
     -> FOREIGN KEY (pid) REFERENCES provinces (id) ON DELETE CASCADE 
     -> );
-һ������Ŀ�в�ʹ���������������InnoDB ����������Ҳ��֧�֡�
-NOT NULL  DEFAULT ֻ�����м�Լ���������ڱ���Լ����
-ALTER TABLE users1 ADD age TINYINT UNSIGNED NOT NULL DEFAULT 10; //������
-ALTER TABLE users1 ADD password VARCHAR(20) NOT NULL AFTER username;//�ŵ�username�ĺ���
+一般在项目中不使用物理外键，除了InnoDB 其他的引擎也不支持。
+NOT NULL  DEFAULT 只存在列级约束，不存在表级约束。
+ALTER TABLE users1 ADD age TINYINT UNSIGNED NOT NULL DEFAULT 10; //添加列
+ALTER TABLE users1 ADD password VARCHAR(20) NOT NULL AFTER username;//放到username的后面
 ALTER TABLE users1 ADD truename VARCHAR(20) NOT NULL FIRST;
-ALTER TABLE users1 DROP truename;//ɾ����
+ALTER TABLE users1 DROP truename;//删除列
 ALTER TABLE users1 DROP truename,DROP password;
 ALTER TABLE users1 ADD password VARCHAR(20) NOT NULL AFTER username,DROP truename;
 ALTER TABLE users1 ADD PRIMARY KEY (id);
 ALTER TABLE users1 ADD UNIQUE (username);
 ALTER TABLE user1 ADD FOREIGN KEY (pid) REFERENCES provinces (id);
 ALTER TABLE users1 DROP PRIMARY KEY;
-ALTER TABLE users1 DROP INDEX username;//ɾ������
-ALTER TABLE users1 MODIFY id SMALLINT UNSIGNED NOT NULL FIRST��//�ı��е�λ�ã����͵ȡ�
-ALTER TABLE users1 CHANGE pid p_id TINYINT UNSIGNED NOT NULL;//�޸��е����� ���������ͣ�
-ALTER TABLE users1 RENAME users2 ;//�������ݱ��ĸ�����ʽRENAME TABLE users3 TO users2;
-DROP TABLE users;   //ɾ����users
-INSERT users VALUES(NULL,'Tim','345',37,1);  //NULL�� DEFAULT ��ʾ�����Զ��������ܡ�
-INSERT users VALUES(NULL,'Tim','345',DEFAULT,1); //ʹ��Ĭ��ֵ
-INSERT users VALUES(NULL,'Tim','345',DEFAULT,1),(NULL,'KOBE',md5('123'),38,1); //ͬʱ����������¼
-INSERT users SET username='Ben',password='456';//���ַ���һ��ֻ�ܲ���һ����¼�����ǿ���ʹ���Ӳ�ѯ��
-��¼������3�з�ʽ  1 �Ǳ�׼��INSERT VALUES 2 INSERT SET  3 INSERT SELECT 
-���¼�¼��
+ALTER TABLE users1 DROP INDEX username;//删除索引
+ALTER TABLE users1 MODIFY id SMALLINT UNSIGNED NOT NULL FIRST；//改变列的位置，类型等。
+ALTER TABLE users1 CHANGE pid p_id TINYINT UNSIGNED NOT NULL;//修改列的名称 和数据类型，
+ALTER TABLE users1 RENAME users2 ;//两种数据表的改名方式RENAME TABLE users3 TO users2;
+DROP TABLE users;   //删除表users
+INSERT users VALUES(NULL,'Tim','345',37,1);  //NULL或 DEFAULT 表示利用自动递增功能。
+INSERT users VALUES(NULL,'Tim','345',DEFAULT,1); //使用默认值
+INSERT users VALUES(NULL,'Tim','345',DEFAULT,1),(NULL,'KOBE',md5('123'),38,1); //同时插入两条记录
+INSERT users SET username='Ben',password='456';//这种方法一次只能插入一条记录，但是可以使用子查询。
+记录插入有3中方式  1 是标准的INSERT VALUES 2 INSERT SET  3 INSERT SELECT 
+更新记录：
 mysql> UPDATE users SET age = age + 5;
-mysql> UPDATE users SET age = age - id,sex = 0;  //ͬʱ�������л�����ö��š�
-mysql> UPDATE users SET age = age + 10 WHERE id % 2 = 0; //�������ĸ���
+mysql> UPDATE users SET age = age - id,sex = 0;  //同时更新两列或多列用逗号。
+mysql> UPDATE users SET age = age + 10 WHERE id % 2 = 0; //带条件的更新
 mysql> DELETE FROM users WHERE id = 6;
-mysql> SELECT id,username FROM users;   //ֻ��ѯ������
+mysql> SELECT id,username FROM users;   //只查询部分列
 mysql> SELECT sex FROM users GROUP BY sex;
-mysql> SELECT sex,age FROM users GROUP BY sex HAVING age > 35;    //HAVING �ǶԷ��������ݽ���ɸѡ��ɸѡ������ age ������ǰ����ֻ��Ǿۺϱ���ʽ
+mysql> SELECT sex,age FROM users GROUP BY sex HAVING age > 35;    //HAVING 是对分组后的数据进行筛选，筛选的条件 age 必须在前面出现或是聚合表达式
 mysql> SELECT sex,SUM(age) FROM users GROUP BY sex HAVING SUM(age) > 35;
-mysql> SELECT * FROM users ORDER BY id DESC; //ORDER�Բ�ѯ�������DESC�ǽ���
-mysql> SELECT * FROM users ORDER BY age,id DESC;  //�������ֶ����򣬵�һ����ͬ�Ļ������ڶ����������С�
-mysql> SELECT * FROM users LIMIT 3,2;   //ֻ�����ѯ����� ��4������0��ʼ������id����ֵû�й�ϵ����ʼ��������¼��
+mysql> SELECT * FROM users ORDER BY id DESC; //ORDER对查询结果排序，DESC是降序
+mysql> SELECT * FROM users ORDER BY age,id DESC;  //按两个字段排序，第一个相同的话，按第二个降序排列。
+mysql> SELECT * FROM users LIMIT 3,2;   //只输出查询结果的 第4个（从0开始算起，与id的数值没有关系）开始的两个记录。
 mysql> SELECT * FROM users ORDER BY id DESC LIMIT 2,2;
-mysql> INSERT test(username) SELECT username FROM users WHERE age > 35; //��users ���ݱ���age����35 �ļ�¼��username д�뵽test����username �ֶΡ�
-SELECT * FROM users \G;��ʾ���������̬����ʾ��
-SET NAMES gbk;�ڿͻ�����ʾ��ʱ����gbk���롣
-�Ӳ�ѯָǶ���ڲ�ѯ�ڲ����ұ���ʼ�ճ�����Բ�����ڡ�
-�Ӳ�ѯ���԰�������ؼ��ֻ���������DISTINCT GROUP BY ORDER BY LIMIT �����ȡ�
-�Ӳ�ѯ������ѯ������ SELECT INSERT UPDATE SET�� DO
-SELECT ROUND(AVG(goods_price),2) FROM tdb_goods; //����۸��ƽ��ֵ�����������뱣��С�������λ��
-SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= (SELECT ROUND(AVG(goods_price),2) FROM tdb_goods);//Ƕ���Ӳ�ѯ��
-�ñȽ�����������Ӳ�ѯ��ʱ�򣬿���ʹ��ANY SOME  ALL .ANY SOME ��ʾ��������һ���Ϳ��ԣ�ALL��ʾȫ��Ҫ���㡣
-SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= ANY (SELECT goods_price FROM tdb_goods WHERE goods_cate = '������');
-ʹ��IN [NOT] IN �������Ӳ�ѯ ANY�� IN �ȼ�  !=ALL �� NOT IN �ȼ�
-EXISTS  NOT EXISTS �������Ӳ�ѯ ������Ӳ�ѯ�����κ��У�EXISTS������TRUE ���򷵻� FALSE��
+mysql> INSERT test(username) SELECT username FROM users WHERE age > 35; //把users 数据表中age大于35 的记录的username 写入到test表的username 字段。
+SELECT * FROM users \G;表示以网格的形态来显示。
+SET NAMES gbk;在客户端显示的时候用gbk编码。
+子查询指嵌套在查询内部，且必须始终出现在圆括号内。
+子查询可以包含多个关键字或条件，如DISTINCT GROUP BY ORDER BY LIMIT 函数等。
+子查询的外层查询可以是 SELECT INSERT UPDATE SET或 DO
+SELECT ROUND(AVG(goods_price),2) FROM tdb_goods; //计算价格的平均值，并四舍五入保留小数点后两位。
+SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= (SELECT ROUND(AVG(goods_price),2) FROM tdb_goods);//嵌入子查询。
+用比较运算符引发子查询的时候，可以使用ANY SOME  ALL .ANY SOME 表示满足其中一个就可以，ALL表示全部要满足。
+SELECT goods_id,goods_name,goods_price FROM dtb_goods WHERE goods_price >= ANY (SELECT goods_price FROM tdb_goods WHERE goods_cate = '超级本');
+使用IN [NOT] IN 引发的子查询 ANY与 IN 等价  !=ALL 与 NOT IN 等价
+EXISTS  NOT EXISTS 引发的子查询 ，如果子查询返回任何行，EXISTS将返回TRUE 否则返回 FALSE。
 INSERT tdb_goods_cates(cate_name) SELECT goods_cate FROM tdb_goods GROUP BY goods_cate;
-��tdb_goods ���е� ��Ʒ���� д�뵽 tdb_goods_cates����cate_name �ֶΡ�
-�������� MySQL JOIN CROSS JOIN INNER JOIN �ǵȼ۵�  LEFT[OUTER] JOIN �������� RIGHT[OUTER] JOIN ��������
+将tdb_goods 表中的 商品分类 写入到 tdb_goods_cates表的cate_name 字段。
+表的连接 MySQL JOIN CROSS JOIN INNER JOIN 是等价的  LEFT[OUTER] JOIN 左外连接 RIGHT[OUTER] JOIN 右外连接
 UPDATE tdb_goods INNER JOIN tdb_goods_cates ON goods_cate = cate_name SET goods_cate = cate_id;
-��INNER JOIN�����ű����ӣ����ӵ������� tdb_goods ��cate_name ����tdb_goods_cates ��goods_cate ��
-Ȼ�����tdb_goods_cates��goods_cate �ֶΣ���cate_id ���¡���������Ϊ�˼���tdb_goods���Ĵ洢�ռ䡣
+用INNER JOIN将两张表连接，连接的条件是 tdb_goods 的goods_cate 等于tdb_goods_cates 的cate_name ，
+然后更新tdb_goods的goods_cate 字段，用cate_id 更新。这样做是为了减少tdb_goods表的存储空间。
 CREATE TABLE tdb_goods_brands
 (
 brand_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 brand_name VARCHAR(40) NOT NULL
 )
 SELECT brand_name FROM tdb_goods GROUP BY brand_name;
-//����һ����������tdb_goods_brands����tdb_goods ��brand_name�ֶεķ���д�롣
+//可以一步创建表格tdb_goods_brands并将tdb_goods 的brand_name字段的分类写入。
 UPDATE tdb_goods INNER JOIN tdb_goods_brands ON brand_name = brand_name SET brand_name = brand_id;
-//����д�ᵼ�´��� ϵͳ�޷���������brand_name���������������brand_nameǰ���ϱ������֣�����AS ���������
+//这样写会导致错误 系统无法区分两个brand_name。解决方法可以在brand_name前加上表的名字，或用AS 给表起别名
 UPDATE tdb_goods AS a INNER JOIN tdb_goods_brands AS b ON a.brand_name = b.brand_name SET a.brand_name = b.brand_id;
-����������brand_name �ֶ���ֵΪ���֣��������ͻ���ԭ����VARCHAR ,Ϊ�˼���ռ�õĿռ䣬��Ҫ�޸ı��Ľṹ��
+这样操作后brand_name 字段数值为数字，但是类型还是原来的VARCHAR ,为了减少占用的空间，需要修改表的结构。
 ALTER TABLE tdb_goods
 CHANGE goods_cate cate_id SMALLINT UNSIGNED NOT NULL ,
 CHANGE brand_name brand_id SMALLINT UNSIGNED NOT NULL;
-�޸ı��Ľṹ��
-�����ӽ���ʾ�������������ļ�¼��LEFT JOIN����ʾ�����ȫ�����ұ��з��������� ��
--- ��ѯ������Ʒ����ϸ��Ϣ(ͨ��������ʵ��)//����������
+修改表的结构。
+内连接仅显示符合连接条件的记录。LEFT JOIN是显示左表的全部和右表中符合条件的 。
+-- 查询所有商品的详细信息(通过内连接实现)//连接两个表
 
    SELECT goods_id,goods_name,cate_name,brand_name,goods_price FROM tdb_goods AS g
 
    INNER JOIN tdb_goods_cates AS c ON g.cate_id = c.cate_id
 
    INNER JOIN tdb_goods_brands AS b ON g.brand_id = b.brand_id\G;
-�������ӿ��Կ�������������������
-�ܶ�ʱ����Ʒ�ķ�����������ģ�Ҫ���������ı��񣬿�������������
--- ���޷�������ݱ����
+表的连接可以看做是外键的逆向操作。
+很多时候商品的分类是又子类的，要创建这样的表格，可以用自身连接
+-- 无限分类的数据表设计
 
    CREATE TABLE tdb_goods_types(
      type_id   SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
      type_name VARCHAR(20) NOT NULL,
      parent_id SMALLINT UNSIGNED NOT NULL DEFAULT 0
-  ); //��¼�����id
- ���뷽�����£�
- INSERT tdb_goods_types(type_name,parent_id) VALUES('���õ���',DEFAULT);
-  INSERT tdb_goods_types(type_name,parent_id) VALUES('���ԡ��칫',DEFAULT);
-  INSERT tdb_goods_types(type_name,parent_id) VALUES('��ҵ�',1);
-  -- �������з��༰�丸��  ��������
+  ); //记录父类的id
+ 插入方法如下：
+ INSERT tdb_goods_types(type_name,parent_id) VALUES('家用电器',DEFAULT);
+  INSERT tdb_goods_types(type_name,parent_id) VALUES('电脑、办公',DEFAULT);
+  INSERT tdb_goods_types(type_name,parent_id) VALUES('大家电',1);
+  -- 查找所有分类及其父类  自身连接
 SELECT s.type_id,s.type_name,p.type_name FROM tdb_goods_types AS s LEFT JOIN tdb_goods_types AS  p ON s.parent_id = p.type_id;
--- �������з��༰���������Ŀ
+-- 查找所有分类及其子类的数目
 SELECT p.type_id,p.type_name,count(s.type_name) AS children_count FROM tdb_goods_types AS p LEFT JOIN tdb_goods_types AS s ON s.parent_id = p.type_id GROUP BY p.type_name ORDER BY p.type_id;
--- �����ظ���¼
+-- 查找重复记录
   SELECT goods_id,goods_name FROM tdb_goods GROUP BY goods_name HAVING count(goods_name) >= 2;
--- ɾ���ظ���¼
+-- 删除重复记录
 DELETE t1 FROM tdb_goods AS t1 LEFT JOIN (SELECT goods_id,goods_name FROM tdb_goods GROUP BY goods_name HAVING count(goods_name) >= 2 ) AS t2  ON t1.goods_name = t2.goods_name  WHERE t1.goods_id > t2.goods_id;
-�ַ�������
-SELECT CONCAT('imooc','MySQL'); �����ַ���
- DESC test ;�鿴���Ľṹ
-SELECT CONCAT(first_name,last_name) AS fullname FROM test;�����ݱ��е������ֶ���������
-SELECT CONTCAT_WS('-','imooc','MySQL');��imooc �� MySQL������һ��
-SELECT FORMAT(12389.56,2); 12,389.56 ��ʽ������
+字符函数：
+SELECT CONCAT('imooc','MySQL'); 连接字符串
+ DESC test ;查看表的结构
+SELECT CONCAT(first_name,last_name) AS fullname FROM test;将数据表中的两个字段连接起来
+SELECT CONTCAT_WS('-','imooc','MySQL');将imooc 和 MySQL连接在一起
+SELECT FORMAT(12389.56,2); 12,389.56 格式化数字
 SELECT LOWER('MySQL');mysql
 SELECT UPPER('mysql');MySQL
 SELECT LEFT('MySQL',2);My
 SELECT LOWER(LEFT('MySQL',2));my
 SELECT LOWER(RIGHT('MySQL',3)); sql
-SELECT LENGTH('MySQL'); 5  ����м��пո񣬿ո�Ҳ���ڳ����С�
+SELECT LENGTH('MySQL'); 5  如果中间有空格，空格也算在长度中。
 SELECT LENGTH(LTRIM('  MySQL    '));   9
 SELECT LENGTH(RTRIM('  MySQL    '));   7
 SELECT LENGTH(TRIM('  MySQL    '));   5
-SELECT TRIM(LEADING '?' FROM '??MySQL???');  MySQL???   ɾ��ǰ��?
-SELECT TRIM(TRAILING '?' FROM '??MySQL???');ɾ����׺�ַ�?
+SELECT TRIM(LEADING '?' FROM '??MySQL???');  MySQL???   删除前导?
+SELECT TRIM(TRAILING '?' FROM '??MySQL???');删除后缀字符?
 SELECT TRIM(BOTH '?' FROM '??MySQL???');MySQL
-SELECT REPLACE('??MySQL???','?','');��??MySQL??? �еģ�ɾ����
-SELECT REPLACE('??MySQL???','?','!!*');�滻���ַ������ȿ��Բ��Եȡ�
-SELECT SUBSTRING('MySQL',1,2);//  My ��MySQL�еĵ�һλ��ʼ��ȡ����ȡ�����ַ�
+SELECT REPLACE('??MySQL???','?','');将??MySQL??? 中的？删除。
+SELECT REPLACE('??MySQL???','?','!!*');替换的字符串长度可以不对等。
+SELECT SUBSTRING('MySQL',1,2);//  My 从MySQL中的第一位开始截取，截取两个字符
 SELECT SUBSTRING('MySQL',3);//SQL
 SELECT SUBSTRING('MySQL',-1); L
-SELECT 'MySQL' LIKE 'M%'; 1 1 ��ʾtrue
-SELECT * FROM test WHERE first_name LIKE '%1%%' ESCAPE '1' ;��ʾ1�����%����ͨ�ַ�����ͨ�����
-%���������ַ���_��������һ���ַ���
-SELECT CEIL(3.01); 4 ��һȡ��
-SELECT FLOOR(3.99); 3 ��һȡ��
+SELECT 'MySQL' LIKE 'M%'; 1 1 表示true
+SELECT * FROM test WHERE first_name LIKE '%1%%' ESCAPE '1' ;表示1后面的%是普通字符不是通配符。
+%代表任意字符，_代表任意一个字符。
+SELECT CEIL(3.01); 4 进一取整
+SELECT FLOOR(3.99); 3 舍一取整
 SELECT 3 DIV 4 ; 0
 SELECT 5 % 3 ; 2  SELECT 5 MOD 3 ; 2
 SELECT POWER(3,3) 27
-SELECT ROUND(3.652,1);3.7  //��������
+SELECT ROUND(3.652,1);3.7  //四舍五入
 SELECT ROUND(3.652,2);3.65
 SELECT ROUND(3.652,0); 4
-SELECT TRUNCATE(125.89,0) ;125  //���������벻ͬ��ֻ�ǽض�
-�Ƚ�������뺯��
+SELECT TRUNCATE(125.89,0) ;125  //与四舍五入不同，只是截断
+比较运算符与函数
 SELECT 15 BETWEEN 1 AND 22 ;  1 
 SELECT 35 NOT BETWEEN 1 AND 22; 0 
 SELECT 10 IN(5,10,15,29);1
 SELECT '' IS NULL ; 0
 SELECT * FROM test WHERE first_name IS NULL;
-SELECT NOW(); ��ӡ����ǰ�����ں�ʱ�䡣
-SELECT CURDATE();��ӡ��ǰ���ڡ�
-SELECT CURTIME();��ӡ��ǰʱ�䡣
+SELECT NOW(); 打印出当前的日期和时间。
+SELECT CURDATE();打印当前日期。
+SELECT CURTIME();打印当前时间。
 SELECT DATE_ADD('2014-3-12',INTERVAL 365 DAY); 2015-03-12
-SELECT DATE_ADD('2014-3-12',INTERVAL -365 DAY); 2013-03-12  YEAR WEEK ��Ҳ������
+SELECT DATE_ADD('2014-3-12',INTERVAL -365 DAY); 2013-03-12  YEAR WEEK 等也可以用
 SELECT DATEDIFF('2013-3-12','2014-3-12'); -365
 SELECT DATE_FORMAT('2014-3-12','%m/%d/%Y');03/02/2014
-��Ϣ����
-SELECT CONNECTION_ID();�������ӵ�ID
-SELECT DATABASE();���ش򿪵����ݿ�
-SELECT USER();��ӡ�û�
-SELECT VERSION();��ӡ�汾��Ϣ
-�ۺϺ���
+信息函数
+SELECT CONNECTION_ID();返回连接的ID
+SELECT DATABASE();返回打开的数据库
+SELECT USER();打印用户
+SELECT VERSION();打印版本信息
+聚合函数
 SELECT ROUND(AVG(goods_prices),2) AS avg_price FROM tdb_goods;
 SELECT COUNT(goods_id) AS counts FROM tdb_goods;
 SELECT MAX(goods_price) AS prices FROM tdb_goods;
 SELECT MIN(goods_price) AS prices FROM tdb_goods;
 SELECT SUM(goods_price) AS prices FROM tdb_goods;
-���ܺ�����
-SELECT MD5('admin');//��webҳ����׼����
-SELECT PASSWORD('abcd');//��mysql�޸������á�
-�Զ��庯����
+加密函数：
+SELECT MD5('admin');//给web页面做准备的
+SELECT PASSWORD('abcd');//给mysql修改密码用。
+自定义函数：
 CREATE FUNCTION f1() RETURNS VARCHAR(30)
-RETURN DATE_FORMAT(NOW(),'%Y��%m��%d�� %H��:%i��:%s��');
+RETURN DATE_FORMAT(NOW(),'%Y年%m月%d日 %H点:%i分:%s秒');
 SELECT f1();
-DROP FUNCTION f2; ɾ������
+DROP FUNCTION f2; 删除函数
 CREATE FUNCTION f2(num1 SMALLINT UNSIGNED,num2 SMALLINT UNSIGNED)
 RETURNS FLOAT(10,2) UNSIGNED
 RETURN (num1+num2)/2;
-�Զ��庯��ʵ������������ƽ��ֵ
-DELIMITER //  ��ʾ����Ľ�����������//
+自定义函数实现求两个数的平均值
+DELIMITER //  表示命令的结束符换成了//
 CREATE FUNCTION adduser(username VARCHAR(20))
 RETURNS INT UNSIGNED 
 BEGIN
@@ -330,17 +330,17 @@ INSERT test(username) VALUES(username);
 RETURN LAST_INSERT_ID();
 END
 //
-�������sql�����Ǹ��Ͻṹ�����и��Ͻṹ�ĺ�������Ҫʹ��BEGIN END ��������
-MySQl ��ִ�й��̣�SQL����------MySQL���� _����___  �﷨��ȷ-----����Ϊ��ʶ�������-----ִ��----����ִ�н����
-�洢������SQl���Ϳ�������Ԥ���뼯�ϣ���һ�����ƴ洢����Ϊһ����Ԫ������
-�洢���̵��ŵ㣺��ǿSQL���Ĺ��ܺ�����ԡ�ʵ���˽Ͽ��ִ���ٶȡ��������������������Ҫɾ��ĳ����¼������Ҫ�ӿͻ��˷���sql���ֻ��Ҫ���ʹ洢���̵����ֺ�Ҫɾ����id���У�
-�洢���̵Ķ������Զ��庯�����ơ�
-�������������ͣ�IN ��ʾ�ò�����ֵ�����ڵ��ô洢����ʱָ����OUT��ʾ�ò�����ֵ���Ա��洢���̸ı䣬���ҿ��Է��ء�INOUT��ʾ�ò����ڵ���ʱָ�������ҿ��Ըı�ͷ��ء�
-���������Ϊ���Ͻṹ��ʹ��BEGIN ������END��䡣
+包含多个sql语句的是复合结构，具有复合结构的函数体需要使用BEGIN END 来包含。
+MySQl 的执行过程：SQL命令------MySQL引擎 _分析___  语法正确-----编译为可识别的命令-----执行----返回执行结果。
+存储过程是SQl语句和控制语句的预编译集合，以一个名称存储并作为一个单元处理。
+存储过程的优点：增强SQL语句的功能和灵活性。实现了较快的执行速度。减少网络流量（如果需要删除某条记录，不需要从客户端发送sql命令，只需要发送存储过程的名字和要删除的id就行）
+存储过程的定义与自定义函数相似。
+参数有三种类型：IN 表示该参数的值必须在调用存储过程时指定。OUT表示该参数的值可以被存储过程改变，并且可以返回。INOUT表示该参数在调用时指定，并且可以改变和返回。
+过程体如果为复合结构则使用BEGIN 。。。END语句。
 CREATE PROCEDURE sp1() SELECT VERSION();
-CALL sp1;//û�в��� ���õĻ����Դ�С����Ҳ���Բ���С���š�
+CALL sp1;//没有参数 调用的话可以带小括号也可以不带小括号。
 CALL sp1();
-�޸Ĺ�����ֻ���Ƚ��洢����ɾ����Ȼ���ؽ��洢���̡�
+修改过程体只能先将存储过程删除，然后重建存储过程。
 DROP PROCEDURE  sp_name;
 DELIMITER //
 CREATE PROCEDURE removeUserById(IN p_id INT UNSIGNED)
@@ -356,12 +356,12 @@ DELETE FROM users WHERE id = p_id;
 SELECT COUNT(id) FROM users INTO usernum;
 END
 //
-ɾ��ָ���ļ�¼�������ؼ�¼������
+删除指定的记录，并返回记录的数量
 CALL removeAndReturnNum(27,@nums);
 SELECT @nums;
-SET @i = 7;    �û�������ֻ�Ե�ǰ�û���ʹ�õĿͻ�����Ч��
-BEGIN  END  ֮�������ı����Ǿֲ�������
-SELECT ROW_COUNT();   �õ���Ӱ������������롢ɾ�������µ�������
+SET @i = 7;    用户变量，只对当前用户所使用的客户端有效。
+BEGIN  END  之间声明的变量是局部变量。
+SELECT ROW_COUNT();   得到受影响的行数，插入、删除、更新的行数。
 CREATE PROCEDURE removeUser(IN p_age SMALLINT UNSIGNED,OUT deleteuser SMALLINT UNSIGNED ,OUT usercount SMALLINT UNSIGNED)
 BEGIN 
 DELETE FROM users WHERE age = p_age;
@@ -369,45 +369,45 @@ SELECT ROW_COUNT() INTO deleteuser;
 SELECT COUNT(id) FROM users INTO usercount;
 END
 //
-ɾ��ָ���ļ�¼��������ɾ���ļ�¼����ʣ��ļ�¼����
-�洢���̺��Զ��庯��������
-�洢����ʵ�ֵĹ���Ҫ����һЩ��������������Ը�ǿ��һ���ô洢������Ա�������
-�洢���̿��Է��ض��ֵ������ֻ�ܷ���һ��ֵ��
-�洢����һ���������ִ�У�������������Ϊ����sql������ɲ��������֡�
-ʵ��ʹ���к����ú�����
-�洢���棺
-SHOW CREATE TABLE �鿴���ݱ��Ĵ������
-MySQL���Խ������Բ�ͬ�ļ����洢���ļ����ڴ棩�У����ּ����ͳ�Ϊ�洢���档
-ÿһ�ִ洢����ʹ�ò�ͬ�Ĵ洢���ơ��������ɡ�����ˮƽ�������ṩ�㷺�Ҳ�ͬ�Ĺ��ܡ�
-MySQL֧�ֵĴ洢���������MyISAM \  InnoDB \ Memory \CSV  \Archive 
-�������ƣ�����������������ͬһʱ����ڣ�����û����Զ�ȡͬһ����Դ����ȡ���������ݲ��ᷢ���κα仯��
-          ��������д�������κ�ʱ��ֻ����һ���û�д����Դ��������д��ʱ�����������Ķ�������д��������
-����������������һ�ֿ�����С�������ԡ�
-        ��������һ�ֿ������������ԡ�          
-��������
-���������ݿ��������ļ�ϵͳ����Ҫ����֮һ��
-�������ڱ�֤���ݿ�������ԡ�
-��������ԣ�
-ԭ����  һ����  ������  �־��� 
-������Ǳ�֤����һ���ԵĲ��ԡ�
-�������Ƕ����ݱ��е�һ�л���е�ֵ���������һ�ֽṹ��
-���ִ洢������ص㣺
-  �ص�       MyISAM   InnoDB   Memory     Archive
-  �洢����   256TB    64TB     ��          ��
-  ����ȫ            ֧��
-  ֧������   ֧��     ֧��     ֧��
-  ������     ����     ����     ����       ����
-  ����ѹ��   ֧��                         ֧��
-  ֧�����            ֧��
+删除指定的记录，并返回删除的记录数和剩余的记录数。
+存储过程和自定义函数的区别：
+存储过程实现的功能要复杂一些，而函数的针对性更强。一般用存储过程针对表操作。
+存储过程可以返回多个值，函数只能返回一个值。
+存储过程一般独立的来执行，而函数可以作为其他sql语句的组成部分来出现。
+实际使用中很少用函数。
+存储引擎：
+SHOW CREATE TABLE 查看数据表的创建命令。
+MySQL可以将数据以不同的技术存储在文件（内存）中，这种技术就称为存储引擎。
+每一种存储引擎使用不同的存储机制、索引技巧、锁定水平，最终提供广泛且不同的功能。
+MySQL支持的存储引擎包括：MyISAM \  InnoDB \ Memory \CSV  \Archive 
+并发控制：共享锁（读锁）在同一时间段内，多个用户可以读取同一个资源，读取过程中数据不会发生任何变化。
+          排它锁（写锁）在任何时候只能有一个用户写入资源，当进行写锁时会阻塞其他的读锁或者写锁操作。
+锁颗粒：表锁，是一种开销最小的锁策略。
+        行锁，是一种开销最大的锁策略。          
+事务处理：
+事务是数据库区别与文件系统的主要特征之一。
+事务用于保证数据库的完整性。
+事务的特性：
+原子性  一致性  隔离性  持久性 
+外键：是保证数据一致性的策略。
+索引：是对数据表中的一列或多列的值进行排序的一种结构。
+各种存储引擎的特点：
+  特点       MyISAM   InnoDB   Memory     Archive
+  存储限制   256TB    64TB     有          无
+  事务安全            支持
+  支持索引   支持     支持     支持
+  锁颗粒     表锁     行锁     表锁       行锁
+  数据压缩   支持                         支持
+  支持外键            支持
   
-  BlackHole �ڶ����棬д������ݶ�����ʧ��һ�����������ݸ��Ƶ��м̡�
-MyISAM   InnoDB �������õĶࡣ
-�޸Ĵ洢����ķ�����1�޸������ļ� 2 �������ݱ���ʱ�� ͨ������ָ����3 �޸Ĵ洢���档
+  BlackHole 黑洞引擎，写入的数据都会消失，一般用于做数据复制的中继。
+MyISAM   InnoDB 这两种用的多。
+修改存储引擎的方法：1修改配置文件 2 创建数据表的时候 通过命令指定。3 修改存储引擎。
 CREATE TABLE tp1(
 s1 VARCHAR(10)
 ) ENGINE = MyISAM;
 ALTER TABLE tp1 ENGINE = InnoDB; 
-��������
+管理工具
 PHPMyAdmin    Navicat  MySQL Workbench 
 http://planet.phpmyadmin.net/ 
 
