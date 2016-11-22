@@ -411,6 +411,44 @@ ALTER TABLE tp1 ENGINE = InnoDB;
 PHPMyAdmin    Navicat  MySQL Workbench 
 http://planet.phpmyadmin.net/ 
 
+MySQL  授权表
+select * from user  查询用户
+select * from tables_priv 查询每张表的权限
+select * from columns_priv  查询每一栏的权限
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
