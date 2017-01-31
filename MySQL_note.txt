@@ -407,6 +407,47 @@ CREATE TABLE tp1(
 s1 VARCHAR(10)
 ) ENGINE = MyISAM;
 ALTER TABLE tp1 ENGINE = InnoDB; 
+MySQL 自连接
+一个表中有parentid 
+select a.label as parent_label, b.label as child_label from menu as a,menu as b where a.id = b.parent;
+内连接和交叉连接的区别是 内连接带where语句，交叉连接不带。内连接和交叉连接可以不写inner join 和cross join 可以用逗号来代替 
+左连接是把左表的数据全部显示，然后显示右表中和左表有关系的部分，右连接相对应得是右表的数据全部显示。内连接是只显示两个表中公共的部分。
+select * from users left join users_groups on users.uid = users_groups.uid where users_groups.gid is null;
+联合是把两个表中的数据合起来显示
+select symbol,price from exchangeA Union select symbol,price from exchangeB;
+Union会把重复的去掉，用Union ALL 可以把重复的也显示出来
+事务
+select @@autocommit;自动提交 默认值为1。
+set autocommit=0;//禁止自动提交 禁止后 只在commit命令后才会提交。这种设置只对innodb这种支持事务的引擎有作用。
+MySQL事务隔离级别与锁
+四种隔离级别：
+serializable 序列化 级别最高  效率最低 
+repeatable read 重复可读   mysql的默认级别
+read committed 提交可读  商用级别的像oracle默认是这种级别
+read uncommitted 未提交可读
+查看隔离级别
+select @@GLOBAL .tx_isolation   查看全局的级别
+select @@session .tx_isolation   查看session的隔离级别
+set session transaction isolation level serializable;设置session的隔离级别是序列化
+start transaction;
+select * from software;
+commit;
+如果两个session都设置了序列化的隔离级别，那么其中一个没有commit的情况下，另一个是不能进行插入操作的。
+set session transaction isolation level repeatable read;
+可重复读情况下回出现幻读。
+session a  session b
+b 写入一行后，a每次读出的都是未修改前的数据，是重复读出相同的数据。
+但是a如果执行了update之类的操作后，影响到了新插入的行，那么a读出的数据就是插入新行后的数据，这是幻读
+set session transaction isolation level read committed;
+start transaction;
+select * from software;
+insert into software (sid,version) values(3,1);
+update software set version = 3 where sid = 3;
+commit;
+session b 中commit后的数据，在session a中可以立刻读到。这样就会出现不可重复读，a每次读到的数据可能不一致。
+set session transaction isolation level read uncommitted;  没有commit的数据可以被另一个session读取到
+这样会造成脏读，session b的数据修改后 session a中立刻就能读取到变化。但是如果session b rollback后，数据就变回了原来的数据，但是session a 中读取到的是变化后的数据。
+
 管理工具
 PHPMyAdmin    Navicat  MySQL Workbench 
 http://planet.phpmyadmin.net/ 
