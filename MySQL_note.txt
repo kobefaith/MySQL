@@ -447,6 +447,20 @@ commit;
 session b 中commit后的数据，在session a中可以立刻读到。这样就会出现不可重复读，a每次读到的数据可能不一致。
 set session transaction isolation level read uncommitted;  没有commit的数据可以被另一个session读取到
 这样会造成脏读，session b的数据修改后 session a中立刻就能读取到变化。但是如果session b rollback后，数据就变回了原来的数据，但是session a 中读取到的是变化后的数据。
+使用事务表是，提高性能的一些方法:
+1.使用小事务 
+2.选择合适的隔离级别
+3.保证开始事务前一切都是可行的
+4.避免死锁
+非事务表的锁定：
+lock table software Read;//读锁
+lock table software Read , user Write;//对多张表上不同的锁
+读锁定是大家都可以读，但是大家都不能写，写锁定是上锁的session即可以读也可以写，其他的session什么都不能做。
+解锁
+unlock tables;
+
+
+
 
 管理工具
 PHPMyAdmin    Navicat  MySQL Workbench 
