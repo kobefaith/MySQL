@@ -417,8 +417,13 @@ select * from users left join users_groups on users.uid = users_groups.uid where
 select symbol,price from exchangeA Union select symbol,price from exchangeB;
 Union会把重复的去掉，用Union ALL 可以把重复的也显示出来
 事务
+
 select @@autocommit;自动提交 默认值为1。
 set autocommit=0;//禁止自动提交 禁止后 只在commit命令后才会提交。这种设置只对innodb这种支持事务的引擎有作用。
+开始事务：
+start transaction;  begin或者 begin work 
+commit;提交事务  rollback回滚事务
+MySQL事务不允许嵌套
 MySQL事务隔离级别与锁
 四种隔离级别：
 serializable 序列化 级别最高  效率最低 
